@@ -24,7 +24,7 @@ BLUE = (0, 0, 255)
 FPS = 60
 
 # screen + caption
-screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Pong!")
 
 # variables
@@ -41,7 +41,7 @@ class Ball:
         self.x_vel = 10
         self.y_vel = 10
         
-    def move(self):
+    def move(self) -> None:
         self.x_coord += self.x_vel
         self.y_coord += self.y_vel
         
@@ -66,7 +66,7 @@ while run:
         if event.type == pygame.QUIT:
             run = False
     
-    pygame.draw.circle(screen, ball.color, (ball.x_coord, ball.y_coord), ball.radius)
+    ball_rect = pygame.draw.circle(screen, ball.color, (ball.x_coord, ball.y_coord), ball.radius)
     ball.move()
     
     pygame.display.update()
