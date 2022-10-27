@@ -80,9 +80,10 @@ class Ball:
         self.x_vel = 10
         self.y_vel = 10
         
-    def ifCollision(self, playerRect) -> None:
-        if (ball_rect.colliderect(playerRect)):
-            self.x_vel *= -1
+    def ifCollision(self) -> None:
+        if ball_rect.colliderect(player_1_hitBox) or ball_rect.colliderect(player_2_hitBox):
+            if ball_rect.x > player_1_hitBox.x or ball_rect.x < player_2_hitBox.x:
+                self.x_vel *= -1
         
     def move(self) -> None:
         self.x_coord += self.x_vel
@@ -103,7 +104,7 @@ class Player:
         self.width = width
         self.height = height
         
-        self.default_vel = 5
+        self.default_vel = 10
         self.y_vel = self.default_vel
         # self.facingUp = True
         
@@ -175,13 +176,12 @@ while run:
     player_1_hitBox = pygame.draw.rect(screen, RED, (player1.x_coord + 10, player1.y_coord + 5, player1.width - 5, player1.height - 10))
     player_2_hitBox = pygame.draw.rect(screen, RED, (player2.x_coord - 5, player2.y_coord + 5, player2.width - 5, player2.height - 10))
     
-    ball.ifCollision(player_1_hitBox)
-    ball.ifCollision(player_2_hitBox)
+    ball.ifCollision()
     
     # update movements
     ball.move()
-    player1.move((pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP))
-    player2.move((pygame.K_s, pygame.K_z, pygame.K_LSHIFT))
+    player1.move((pygame.K_s, pygame.K_z, pygame.K_LSHIFT))
+    player2.move((pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP))
     
     scoring()
     draw_text(screen, score, WIDTH//2, 30, 50, WHITE)
