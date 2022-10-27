@@ -29,14 +29,26 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Pong!")
 
 # variables
+score1 = 0
+score2 = 0
+score = f"{score1}           {score2}"
 
 # functions
-def draw_text(screen, txt, x, y, police, color):
+def draw_text(screen: pygame.Surface, txt: str, x: int, y: int, police: int, color: tuple):
     txt_font = pygame.font.Font(None, police)
     txt = txt_font.render(txt, True, color)
     txt_rect = txt.get_rect()
     txt_rect.center =  (x, y)
     screen.blit(txt,txt_rect)
+    
+def drawNet():
+    screen.fill(BLACK)
+    offset = 10
+    
+    for _ in range(11):
+        y = _ * (HEIGHT//16) + offset
+        pygame.draw.rect(screen, WHITE, (WIDTH//2 - 2.5, y, 5, HEIGHT//16))
+        offset += 20
 
 # classes
 class Ball:
@@ -133,14 +145,14 @@ player2 = Player(WIDTH - 65, HEIGHT//2 - 60, WHITE, 25, 120)
 # main loop
 run = True
 while run:
-    screen.fill(BLACK)
+    drawNet()
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
     
     ball_rect = pygame.draw.circle(screen, ball.color, (ball.x_coord, ball.y_coord), ball.radius)
-    # ball.move()
+    ball.move()
     
     player1_rect = pygame.draw.rect(screen, player1.color, (player1.x_coord, player1.y_coord, player1.width, player1.height))
     player2_rect = pygame.draw.rect(screen, player2.color, (player2.x_coord, player2.y_coord, player2.width, player2.height))
@@ -148,6 +160,8 @@ while run:
     # update movements
     player1.move((pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP))
     player2.move((pygame.K_s, pygame.K_z, pygame.K_LSHIFT))
+    
+    # draw_text(screen, score, HEIGHT//2 + 150, 30, 50, WHITE)
     
     pygame.display.update()
     clock.tick(FPS)
