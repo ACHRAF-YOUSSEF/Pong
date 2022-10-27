@@ -31,6 +31,12 @@ pygame.display.set_caption("Pong!")
 # variables
 
 # functions
+def draw_text(screen, txt, x, y, police, color):
+    txt_font = pygame.font.Font(None, police)
+    txt = txt_font.render(txt, True, color)
+    txt_rect = txt.get_rect()
+    txt_rect.center =  (x, y)
+    screen.blit(txt,txt_rect)
 
 # classes
 class Ball:
@@ -77,6 +83,29 @@ class Player:
             
         if keys[controls[1]] and self.y_coord > 0:
             self.y_coord -= self.y_vel
+
+class BasicTimer:
+    def __init__(self, time_to_wait = 2):
+        self.time_to_wait = time_to_wait
+        self.current_time = 0
+        self.start_time = pygame.time.get_ticks()
+        
+    def do_Function_case_1(self, screen, x=0):
+        if x == 0:
+            screen.fill((0, 0, 0))
+    
+    def do_Function_case_2(self, screen, x=0):
+        if x == 0:
+            screen.fill((255, 255, 255))
+    
+    def do_Function(self, screen, x1, x2):
+        self.current_time = pygame.time.get_ticks()
+        
+        if self.current_time - self.start_time < self.time_to_wait * 1000:
+            self.do_Function_case_1(screen, x1)
+            
+        else:
+            self.do_Function_case_2(screen, x2)
 
 # clock
 clock = pygame.time.Clock()
