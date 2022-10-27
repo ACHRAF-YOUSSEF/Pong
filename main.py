@@ -39,6 +39,7 @@ class Ball:
         self.y_coord = y_coord
         self.color = color
         self.radius = radius
+        
         self.x_vel = 10
         self.y_vel = 10
         
@@ -57,11 +58,33 @@ class Ball:
     def randomColor(self) -> tuple:
         return (randint(0, 255),randint(0, 255), randint(0, 255))
 
+class Player:
+    def __init__(self, x_coord: int, y_coord: int, color: tuple, width: int, height: int) -> None:
+        self.x_coord = x_coord
+        self.y_coord = y_coord
+        self.color = color
+        self.width = width
+        self.height = height
+        
+        self.x_vel = 10
+        self.y_vel = 10
+        
+    def move(self, controls: tuple) -> None:
+        keys = pygame.key.get_pressed()
+        
+        if keys[controls[0]] and self.y_coord < HEIGHT - self.height:
+            self.y_coord += self.y_vel
+            
+        if keys[controls[1]] and self.y_coord > 0:
+            self.y_coord -= self.y_vel
+
 # clock
 clock = pygame.time.Clock()
 
 # objects
-ball = Ball(50, 50, RED, 15)
+ball = Ball(WIDTH//2, HEIGHT//2, RED, 15)
+player1 = Player(40, HEIGHT//2 - 60, WHITE, 25, 120)
+player2 = Player(WIDTH - 65, HEIGHT//2 - 60, WHITE, 25, 120)
 
 # main loop
 run = True
@@ -73,7 +96,14 @@ while run:
             run = False
     
     ball_rect = pygame.draw.circle(screen, ball.color, (ball.x_coord, ball.y_coord), ball.radius)
-    ball.move()
+    # ball.move()
+    
+    player1_rect = pygame.draw.rect(screen, player1.color, (player1.x_coord, player1.y_coord, player1.width, player1.height))
+    player2_rect = pygame.draw.rect(screen, player2.color, (player2.x_coord, player2.y_coord, player2.width, player2.height))
+    
+    # update movements
+    player1.move((pygame.K_DOWN, pygame.K_UP))
+    player2.move((pygame.K_s, pygame.K_z))
     
     pygame.display.update()
     clock.tick(FPS)
