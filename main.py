@@ -34,6 +34,23 @@ score2 = 0
 score = f"{score1}           {score2}"
 
 # functions
+def scorring():
+    global score1, score2, score
+    
+    if ball.x_coord <= 0:
+        ball.x_coord = WIDTH // 2
+        ball.y_coord = HEIGHT // 2
+        ball.x_vel *= -1
+        score2 += 1
+        
+    elif ball.x_coord >= WIDTH:
+        ball.x_coord = WIDTH // 2
+        ball.y_coord = HEIGHT // 2
+        ball.x_vel *= -1
+        score1 += 1
+        
+    score = f"{score1}           {score2}"
+    
 def draw_text(screen: pygame.Surface, txt: str, x: int, y: int, police: int, color: tuple):
     txt_font = pygame.font.Font("Blippo Bold.ttf", police)
     txt = txt_font.render(txt, True, color)
@@ -64,10 +81,6 @@ class Ball:
     def move(self) -> None:
         self.x_coord += self.x_vel
         self.y_coord += self.y_vel
-        
-        if self.x_coord >= WIDTH or self.x_coord <= 0:
-            self.x_vel *= -1
-            self.color = self.randomColor()
         
         if self.y_coord >= HEIGHT or self.y_coord <= 0:
             self.y_vel *= -1
@@ -158,6 +171,7 @@ while run:
     player1.move((pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP))
     player2.move((pygame.K_s, pygame.K_z, pygame.K_LSHIFT))
     
+    scorring()
     draw_text(screen, score, WIDTH//2, 30, 50, WHITE)
     
     pygame.display.update()
