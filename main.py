@@ -72,40 +72,55 @@ class Player:
         self.width = width
         self.height = height
         
-        self.x_vel = 10
-        self.y_vel = 10
+        self.default_vel = 5
+        self.y_vel = self.default_vel
+        self.facingUp = True
+        
+        self.isPressed = False
+        self.wait = 5
+        
+        # self.timer = BasicTimer(3)
         
     def move(self, controls: tuple) -> None:
         keys = pygame.key.get_pressed()
         
+        # if keys[controls[2]] and keys[controls[0]] or keys[controls[2]] and keys[controls[1]]:
+        #     self.timer.do_Function()
+        
         if keys[controls[0]] and self.y_coord < HEIGHT - self.height:
             self.y_coord += self.y_vel
+            self.facingUp = False
             
         if keys[controls[1]] and self.y_coord > 0:
             self.y_coord -= self.y_vel
-
-class BasicTimer:
-    def __init__(self, time_to_wait = 2):
-        self.time_to_wait = time_to_wait
-        self.current_time = 0
-        self.start_time = pygame.time.get_ticks()
-        
-    def do_Function_case_1(self, screen, x=0):
-        if x == 0:
-            screen.fill((0, 0, 0))
-    
-    def do_Function_case_2(self, screen, x=0):
-        if x == 0:
-            screen.fill((255, 255, 255))
-    
-    def do_Function(self, screen, x1, x2):
-        self.current_time = pygame.time.get_ticks()
-        
-        if self.current_time - self.start_time < self.time_to_wait * 1000:
-            self.do_Function_case_1(screen, x1)
+            self.facingUp = True
             
-        else:
-            self.do_Function_case_2(screen, x2)
+    def dash(self, amount):
+        if self.facingUp and self.y_coord > 0:
+            self.y_coord -= self.y_vel * amount
+            
+        elif self.y_coord < HEIGHT - self.height:
+            self.y_coord += self.y_vel * amount
+        
+    def resetVel(self):
+        self.y_vel = self.default_vel
+        self.current_time = 0
+        self.start_time = pygame.time.get_ticks() 
+
+# class BasicTimer:
+#     def __init__(self, time_to_wait = 2):
+#         self.time_to_wait = time_to_wait
+#         self.current_time = 0
+#         self.start_time = pygame.time.get_ticks()
+    
+#     def do_Function(self):
+#         self.current_time = pygame.time.get_ticks()
+        
+#         if self.current_time - self.start_time > self.time_to_wait * 1000:
+#             player1.resetVel()
+            
+#         else:
+#             player1.dash(1.5)
 
 # clock
 clock = pygame.time.Clock()
@@ -131,8 +146,8 @@ while run:
     player2_rect = pygame.draw.rect(screen, player2.color, (player2.x_coord, player2.y_coord, player2.width, player2.height))
     
     # update movements
-    player1.move((pygame.K_DOWN, pygame.K_UP))
-    player2.move((pygame.K_s, pygame.K_z))
+    player1.move((pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP))
+    player2.move((pygame.K_s, pygame.K_z, pygame.K_LSHIFT))
     
     pygame.display.update()
     clock.tick(FPS)
