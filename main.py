@@ -86,10 +86,7 @@ class Player:
         
         self.default_vel = 5
         self.y_vel = self.default_vel
-        self.facingUp = True
-        
-        self.isPressed = False
-        self.wait = 5
+        # self.facingUp = True
         
         # self.timer = BasicTimer(3)
         
@@ -101,23 +98,23 @@ class Player:
         
         if keys[controls[0]] and self.y_coord < HEIGHT - self.height:
             self.y_coord += self.y_vel
-            self.facingUp = False
+            # self.facingUp = False
             
         if keys[controls[1]] and self.y_coord > 0:
             self.y_coord -= self.y_vel
-            self.facingUp = True
+            # self.facingUp = True
             
-    def dash(self, amount):
-        if self.facingUp and self.y_coord > 0:
-            self.y_coord -= self.y_vel * amount
+    # def dash(self, amount):
+    #     if self.facingUp and self.y_coord > 0:
+    #         self.y_coord -= self.y_vel * amount
             
-        elif self.y_coord < HEIGHT - self.height:
-            self.y_coord += self.y_vel * amount
+    #     elif self.y_coord < HEIGHT - self.height:
+    #         self.y_coord += self.y_vel * amount
         
-    def resetVel(self):
-        self.y_vel = self.default_vel
-        self.current_time = 0
-        self.start_time = pygame.time.get_ticks() 
+    # def resetVel(self):
+    #     self.y_vel = self.default_vel
+    #     self.current_time = 0
+    #     self.start_time = pygame.time.get_ticks() 
 
 # class BasicTimer:
 #     def __init__(self, time_to_wait = 2):
