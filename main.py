@@ -34,7 +34,7 @@ score2 = 0
 score = f"{score1}           {score2}"
 
 # functions
-def scorring():
+def scoring():
     global score1, score2, score
     
     if ball.x_coord <= 0:
@@ -171,7 +171,7 @@ while run:
     player1.move((pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP))
     player2.move((pygame.K_s, pygame.K_z, pygame.K_LSHIFT))
     
-    scorring()
+    scoring()
     draw_text(screen, score, WIDTH//2, 30, 50, WHITE)
     
     pygame.display.update()
