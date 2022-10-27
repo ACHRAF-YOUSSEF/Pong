@@ -35,7 +35,7 @@ score = f"{score1}           {score2}"
 
 # functions
 def draw_text(screen: pygame.Surface, txt: str, x: int, y: int, police: int, color: tuple):
-    txt_font = pygame.font.Font(None, police)
+    txt_font = pygame.font.Font("Blippo Bold.ttf", police)
     txt = txt_font.render(txt, True, color)
     txt_rect = txt.get_rect()
     txt_rect.center =  (x, y)
@@ -161,7 +161,7 @@ while run:
     player1.move((pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP))
     player2.move((pygame.K_s, pygame.K_z, pygame.K_LSHIFT))
     
-    # draw_text(screen, score, HEIGHT//2 + 150, 30, 50, WHITE)
+    draw_text(screen, score, WIDTH//2, 30, 50, WHITE)
     
     pygame.display.update()
     clock.tick(FPS)
