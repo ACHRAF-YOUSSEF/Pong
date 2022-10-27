@@ -41,12 +41,14 @@ def scoring():
         ball.x_coord = WIDTH // 2
         ball.y_coord = HEIGHT // 2
         ball.x_vel *= -1
+        ball.y_vel = 10
         score2 += 1
         
     elif ball.x_coord >= WIDTH:
         ball.x_coord = WIDTH // 2
         ball.y_coord = HEIGHT // 2
         ball.x_vel *= -1
+        ball.y_vel = 10
         score1 += 1
         
     score = f"{score1}           {score2}"
@@ -77,6 +79,10 @@ class Ball:
         
         self.x_vel = 10
         self.y_vel = 10
+        
+    def ifCollision(self, playerRect) -> None:
+        if (ball_rect.colliderect(playerRect)):
+            self.x_vel *= -1
         
     def move(self) -> None:
         self.x_coord += self.x_vel
@@ -165,6 +171,12 @@ while run:
     ball_rect = pygame.draw.circle(screen, ball.color, (ball.x_coord, ball.y_coord), ball.radius)
     player1_rect = pygame.draw.rect(screen, player1.color, (player1.x_coord, player1.y_coord, player1.width, player1.height))
     player2_rect = pygame.draw.rect(screen, player2.color, (player2.x_coord, player2.y_coord, player2.width, player2.height))
+    
+    player_1_hitBox = pygame.draw.rect(screen, RED, (player1.x_coord + 10, player1.y_coord + 5, player1.width - 5, player1.height - 10))
+    player_2_hitBox = pygame.draw.rect(screen, RED, (player2.x_coord - 5, player2.y_coord + 5, player2.width - 5, player2.height - 10))
+    
+    ball.ifCollision(player_1_hitBox)
+    ball.ifCollision(player_2_hitBox)
     
     # update movements
     ball.move()
