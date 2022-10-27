@@ -1,5 +1,6 @@
 # imports
 import pygame
+from random import randint
 
 # initializations
 pygame.init()
@@ -33,7 +34,7 @@ pygame.display.set_caption("Pong!")
 
 # classes
 class Ball:
-    def __init__(self, x_coord: int, y_coord: int, color: tuple(), radius: int) -> None:
+    def __init__(self, x_coord: int, y_coord: int, color: tuple, radius: int) -> None:
         self.x_coord = x_coord
         self.y_coord = y_coord
         self.color = color
@@ -47,9 +48,14 @@ class Ball:
         
         if self.x_coord >= WIDTH or self.x_coord <= 0:
             self.x_vel *= -1
+            self.color = self.randomColor()
         
         if self.y_coord >= HEIGHT or self.y_coord <= 0:
             self.y_vel *= -1
+            self.color = self.randomColor()
+            
+    def randomColor(self) -> tuple:
+        return (randint(0, 255),randint(0, 255), randint(0, 255))
 
 # clock
 clock = pygame.time.Clock()
