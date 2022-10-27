@@ -56,7 +56,7 @@ def draw_text(screen: pygame.Surface, txt: str, x: int, y: int, police: int, col
     txt = txt_font.render(txt, True, color)
     txt_rect = txt.get_rect()
     txt_rect.center =  (x, y)
-    screen.blit(txt,txt_rect)
+    screen.blit(txt, txt_rect)
     
 def drawNet():
     screen.fill(BLACK)
@@ -161,13 +161,13 @@ while run:
         if event.type == pygame.QUIT:
             run = False
     
+    # rects
     ball_rect = pygame.draw.circle(screen, ball.color, (ball.x_coord, ball.y_coord), ball.radius)
-    ball.move()
-    
     player1_rect = pygame.draw.rect(screen, player1.color, (player1.x_coord, player1.y_coord, player1.width, player1.height))
     player2_rect = pygame.draw.rect(screen, player2.color, (player2.x_coord, player2.y_coord, player2.width, player2.height))
     
     # update movements
+    ball.move()
     player1.move((pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP))
     player2.move((pygame.K_s, pygame.K_z, pygame.K_LSHIFT))
     
