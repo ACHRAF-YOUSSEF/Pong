@@ -28,15 +28,34 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("Pong!")
 
 # variables
-x_coord = 50
-y_coord = 50
-x_vel = 8
-y_vel = 8
-color = RED
 
+# functions
+
+# classes
+class Ball:
+    def __init__(self, x_coord: int, y_coord: int, color: tuple(), radius: int) -> None:
+        self.x_coord = x_coord
+        self.y_coord = y_coord
+        self.color = color
+        self.radius = radius
+        self.x_vel = 10
+        self.y_vel = 10
+        
+    def move(self):
+        self.x_coord += self.x_vel
+        self.y_coord += self.y_vel
+        
+        if self.x_coord >= WIDTH or self.x_coord <= 0:
+            self.x_vel *= -1
+        
+        if self.y_coord >= HEIGHT or self.y_coord <= 0:
+            self.y_vel *= -1
 
 # clock
 clock = pygame.time.Clock()
+
+# objects
+ball = Ball(50, 50, RED, 15)
 
 # main loop
 run = True
@@ -47,16 +66,8 @@ while run:
         if event.type == pygame.QUIT:
             run = False
     
-    if x_coord >= WIDTH or x_coord <= 0:
-        x_vel *= -1
-        
-    if y_coord >= HEIGHT or y_coord <= 0:
-        y_vel *= -1
-            
-    pygame.draw.circle(screen, color, (x_coord, y_coord), 15)
-    
-    x_coord += x_vel
-    y_coord += y_vel
+    pygame.draw.circle(screen, ball.color, (ball.x_coord, ball.y_coord), ball.radius)
+    ball.move()
     
     pygame.display.update()
     clock.tick(FPS)
