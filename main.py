@@ -31,15 +31,23 @@ pygame.display.set_caption("Pong!")
 # variables
 score1 = 0
 score2 = 0
+
 score = f"{score1}           {score2}"
+
+player1wins = 0
+player2wins = 0
+
+incremented = False
+
 winner = ""
 
 # functions
 def game_reset() -> None:
-    global score1 , score2, winner
+    global score1 , score2, winner, incremented
     if win():
         draw_text(screen, winner, WIDTH//2, HEIGHT//2 - 50, 50, WHITE)
         draw_text(screen, "Press space to restart!", WIDTH//2, HEIGHT//2, 50, WHITE)     
+        
         if pygame.key.get_pressed()[pygame.K_SPACE]:
             ball.y_vel = ball.x_vel = 10
             ball.resetVel()
@@ -48,16 +56,22 @@ def game_reset() -> None:
             player1.resetPos(40, HEIGHT//2 - 60)
             player2.resetPos(WIDTH - 65, HEIGHT//2 - 60)
             score1 = score2 = 0
+            incremented = False
             winner = ""
 
 def win() -> bool:
-    global winner
+    global winner, player1wins, player2wins, incremented
     
     if score1 >= 11 and score1 - score2 >= 2:
         winner = 'player1 wins'
         ball.x_coord = WIDTH // 2
         ball.y_coord = HEIGHT // 2
         ball.x_vel = ball.y_vel = 0
+        
+        if not incremented:
+            player1wins += 1
+            incremented = True
+            
         return True
         
     elif score2 >= 11 and score2 - score1 >= 2:
@@ -65,6 +79,11 @@ def win() -> bool:
         ball.x_coord = WIDTH // 2
         ball.y_coord = HEIGHT // 2
         ball.x_vel = ball.y_vel = 0
+    
+        if not incremented:
+            player2wins += 1
+            incremented = True
+        
         return True   
         
     return False
@@ -208,6 +227,8 @@ while run:
     
     scoring()
     draw_text(screen, score, WIDTH//2, 30, 50, WHITE)
+    draw_text(screen, f"{player1wins}", 50, 30, 50, WHITE)
+    draw_text(screen, f"{player2wins}", WIDTH - 50 - player2.width, 30, 50, WHITE)
     
     game_reset()
     
