@@ -92,12 +92,12 @@ class Ball:
         
     def ifCollision(self) -> None:
         if ball_rect.colliderect(player1_rect) or ball_rect.colliderect(player2_rect):
-            if ball_rect.x > player1_rect.x:
-                self.x_coord = player1_rect.x + self.radius + player1_rect.width
+            if self.x_coord <= player1_rect.x + player1.width + 1:
+                self.x_coord = player1_rect.right + 1
                 self.x_vel *= -1
             
-            elif ball_rect.x < player2_rect.x:
-                self.x_coord = player2_rect.x - self.radius
+            if self.x_coord >= player2_rect.x:
+                self.x_coord = player2_rect.x - 1
                 self.x_vel *= -1
     
     def resetVel(self) -> None:
@@ -199,6 +199,7 @@ while run:
             ball.resetVel()
             player1.resetVel()
             player2.resetVel()
+            winner = ""
     
     pygame.display.update()
     clock.tick(FPS)
