@@ -227,8 +227,8 @@ while run:
     
     scoring()
     draw_text(screen, score, WIDTH//2, 30, 50, WHITE)
-    draw_text(screen, f"player1 total wins:{player1wins}", 50, 30, 50, WHITE)
-    draw_text(screen, f"player2 total wins:{player2wins}", WIDTH - 50 - player2.width, 30, 50, WHITE)
+    draw_text(screen, f"wins : {player1wins}", 60, 30, 30, WHITE)
+    draw_text(screen, f"wins : {player2wins}", WIDTH - 60 - player2.width, 30, 30, WHITE)
     
     game_reset()
     
