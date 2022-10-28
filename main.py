@@ -1,6 +1,6 @@
 # imports
 import pygame
-from random import choice
+from random import randint
 
 # initializations
 pygame.init()
@@ -35,7 +35,7 @@ score = f"{score1}           {score2}"
 winner = ""
 
 # functions
-def game_reset():
+def game_reset() -> None:
     global score1 , score2, winner
     if win():
         draw_text(screen, winner, WIDTH//2, HEIGHT//2 - 50, 50, WHITE)
@@ -45,12 +45,12 @@ def game_reset():
             ball.resetVel()
             player1.resetVel()
             player2.resetVel()
-            player1.resetPos()
-            player2.resetPos()
+            player1.resetPos(40, HEIGHT//2 - 60)
+            player2.resetPos(WIDTH - 65, HEIGHT//2 - 60)
             score1 = score2 = 0
             winner = ""
 
-def win():
+def win() -> bool:
     global winner
     
     if score1 >= 11 and score1 - score2 >= 2:
@@ -69,21 +69,21 @@ def win():
         
     return False
 
-def scoring():
+def scoring() -> None:
     global score1, score2, score
     
     if ball.x_coord <= 0:
         ball.x_coord = WIDTH // 2
         ball.y_coord = HEIGHT // 2
-        ball.x_vel *= -1
-        ball.y_vel = 10
+        ball.x_vel = ball.l[randint(0, 1)]
+        ball.y_vel = ball.l[randint(0, 1)]
         score2 += 1
         
     elif ball.x_coord >= WIDTH:
         ball.x_coord = WIDTH // 2
         ball.y_coord = HEIGHT // 2
-        ball.x_vel *= -1
-        ball.y_vel = 10
+        ball.x_vel = ball.l[randint(0, 1)]
+        ball.y_vel = ball.l[randint(0, 1)]
         score1 += 1
         
     score = f"{score1}           {score2}"
@@ -115,23 +115,21 @@ class Ball:
         self.x_vel = 10
         self.y_vel = 10
         
+        self.l = [10, -10]
+        
     def ifCollision(self) -> None:
         if ball_rect.colliderect(player1_rect) or ball_rect.colliderect(player2_rect):
             if self.x_coord <= player1_rect.x + player1.width + 1:
                 self.x_coord = player1_rect.right + 1
                 self.x_vel *= -1
-                self.x_vel = choice([10, -10])
-                self.y_vel = choice([10, -10]) 
             
             if self.x_coord >= player2_rect.x:
                 self.x_coord = player2_rect.x - 1
                 self.x_vel *= -1
-                self.x_vel = choice([10, -10])
-                self.y_vel = choice([10, -10]) 
     
     def resetVel(self) -> None:
-        self.x_vel = choice([10, -10])
-        self.y_vel = choice([10, -10])   
+        self.x_vel = self.l[randint(0, 1)]
+        self.y_vel = self.l[randint(0, 1)] 
     
     def move(self) -> None:
         self.x_coord += self.x_vel
@@ -154,9 +152,9 @@ class Player:
     def resetVel(self) -> None:
         self.y_vel = self.default_vel
     
-    def resetPos(self) -> None:
-        self.x_coord = 40, HEIGHT//2 - 60
-        self.y_coord = WIDTH - 65, HEIGHT//2 - 60
+    def resetPos(self, x, y) -> None:
+        self.x_coord = x
+        self.y_coord = y
         
     def move(self, controls: tuple) -> None:
         keys = pygame.key.get_pressed()
@@ -200,9 +198,6 @@ while run:
     ball_rect = pygame.draw.circle(screen, ball.color, (ball.x_coord, ball.y_coord), ball.radius)
     player1_rect = pygame.draw.rect(screen, player1.color, (player1.x_coord, player1.y_coord, player1.width, player1.height))
     player2_rect = pygame.draw.rect(screen, player2.color, (player2.x_coord, player2.y_coord, player2.width, player2.height))
-    
-    player_1_hitBox = pygame.draw.rect(screen, RED, (player1.x_coord + 10, player1.y_coord + 5, player1.width - 5, player1.height - 10))
-    player_2_hitBox = pygame.draw.rect(screen, RED, (player2.x_coord - 5, player2.y_coord + 5, player2.width - 5, player2.height - 10))
     
     ball.ifCollision()
     
