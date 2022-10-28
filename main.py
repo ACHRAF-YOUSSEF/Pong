@@ -1,6 +1,6 @@
 # imports
 import pygame
-from random import randint
+from random import choice
 
 # initializations
 pygame.init()
@@ -120,14 +120,18 @@ class Ball:
             if self.x_coord <= player1_rect.x + player1.width + 1:
                 self.x_coord = player1_rect.right + 1
                 self.x_vel *= -1
+                self.x_vel = choice([10, -10])
+                self.y_vel = choice([10, -10]) 
             
             if self.x_coord >= player2_rect.x:
                 self.x_coord = player2_rect.x - 1
                 self.x_vel *= -1
+                self.x_vel = choice([10, -10])
+                self.y_vel = choice([10, -10]) 
     
     def resetVel(self) -> None:
-        self.x_vel = 10
-        self.y_vel = 10    
+        self.x_vel = choice([10, -10])
+        self.y_vel = choice([10, -10])   
     
     def move(self) -> None:
         self.x_coord += self.x_vel
@@ -135,10 +139,6 @@ class Ball:
         
         if self.y_coord >= HEIGHT or self.y_coord <= 0:
             self.y_vel *= -1
-            self.color = self.randomColor()
-            
-    def randomColor(self) -> tuple:
-        return (randint(0, 255),randint(0, 255), randint(0, 255))
 
 class Player:
     def __init__(self, x_coord: int, y_coord: int, color: tuple, width: int, height: int) -> None:
