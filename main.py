@@ -81,8 +81,14 @@ class Ball:
         self.y_vel = 10
         
     def ifCollision(self) -> None:
-        if ball_rect.colliderect(player_1_hitBox) or ball_rect.colliderect(player_2_hitBox):
-            if ball_rect.x > player_1_hitBox.x or ball_rect.x < player_2_hitBox.x:
+        if ball_rect.colliderect(player_1_hitBox):
+            if ball_rect.x > player_1_hitBox.x:
+                self.x_coord = player_1_hitBox.x + self.radius + player_1_hitBox.width
+                self.x_vel *= -1
+                
+        elif ball_rect.colliderect(player_2_hitBox):
+            if ball_rect.x < player_2_hitBox.x:
+                self.x_coord = player_2_hitBox.x - self.radius
                 self.x_vel *= -1
         
     def move(self) -> None:
