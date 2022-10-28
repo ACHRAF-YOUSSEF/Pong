@@ -32,8 +32,18 @@ pygame.display.set_caption("Pong!")
 score1 = 0
 score2 = 0
 score = f"{score1}           {score2}"
+winner = ""
 
 # functions
+def win():
+    global winner
+    
+    if score1 == 11 and score1 - score2 >= 2:
+        winner = 'player1 wins'
+        
+    elif score2 == 11 and score2 - score1 >= 2:
+        winner = 'player2 wins'   
+
 def scoring():
     global score1, score2, score
     
@@ -53,14 +63,14 @@ def scoring():
         
     score = f"{score1}           {score2}"
     
-def draw_text(screen: pygame.Surface, txt: str, x: int, y: int, police: int, color: tuple):
+def draw_text(screen: pygame.Surface, txt: str, x: int, y: int, police: int, color: tuple) -> None:
     txt_font = pygame.font.Font("Blippo Bold.ttf", police)
     txt = txt_font.render(txt, True, color)
     txt_rect = txt.get_rect()
     txt_rect.center =  (x, y)
     screen.blit(txt, txt_rect)
     
-def drawNet():
+def drawNet() -> None:
     screen.fill(BLACK)
     offset = 10
     
@@ -81,16 +91,19 @@ class Ball:
         self.y_vel = 10
         
     def ifCollision(self) -> None:
-        if ball_rect.colliderect(player_1_hitBox):
-            if ball_rect.x > player_1_hitBox.x:
-                self.x_coord = player_1_hitBox.x + self.radius + player_1_hitBox.width
+        if ball_rect.colliderect(player1_rect) or ball_rect.colliderect(player2_rect):
+            if ball_rect.x > player1_rect.x:
+                self.x_coord = player1_rect.x + self.radius + player1_rect.width
                 self.x_vel *= -1
-                
-        elif ball_rect.colliderect(player_2_hitBox):
-            if ball_rect.x < player_2_hitBox.x:
-                self.x_coord = player_2_hitBox.x - self.radius
+            
+            elif ball_rect.x < player2_rect.x:
+                self.x_coord = player2_rect.x - self.radius
                 self.x_vel *= -1
-        
+    
+    def resetVel(self) -> None:
+        self.x_vel = 10
+        self.y_vel = 10    
+    
     def move(self) -> None:
         self.x_coord += self.x_vel
         self.y_coord += self.y_vel
@@ -112,9 +125,9 @@ class Player:
         
         self.default_vel = 10
         self.y_vel = self.default_vel
-        # self.facingUp = True
         
-        # self.timer = BasicTimer(3)
+    def resetVel(self) -> None:
+        self.y_vel = self.default_vel
         
     def move(self, controls: tuple) -> None:
         keys = pygame.key.get_pressed()
@@ -136,27 +149,7 @@ class Player:
             
     #     elif self.y_coord < HEIGHT - self.height:
     #         self.y_coord += self.y_vel * amount
-        
-    # def resetVel(self):
-    #     self.y_vel = self.default_vel
-    #     self.current_time = 0
-    #     self.start_time = pygame.time.get_ticks() 
-
-# class BasicTimer:
-#     def __init__(self, time_to_wait = 2):
-#         self.time_to_wait = time_to_wait
-#         self.current_time = 0
-#         self.start_time = pygame.time.get_ticks()
     
-#     def do_Function(self):
-#         self.current_time = pygame.time.get_ticks()
-        
-#         if self.current_time - self.start_time > self.time_to_wait * 1000:
-#             player1.resetVel()
-            
-#         else:
-#             player1.dash(1.5)
-
 # clock
 clock = pygame.time.Clock()
 
@@ -191,6 +184,21 @@ while run:
     
     scoring()
     draw_text(screen, score, WIDTH//2, 30, 50, WHITE)
+    
+    win()
+    
+    if winner != "":
+        draw_text(screen, winner, WIDTH//2, HEIGHT//2 - 50, 50, GREEN)
+        ball.x_vel = 0
+        ball.y_vel = 0
+        player1.y_vel = 0
+        player2.y_vel = 0
+        draw_text(screen, 'press the space bar to restart!', WIDTH//2, HEIGHT//2, 50, GREEN)
+        
+        if (pygame.key.get_pressed()[pygame.K_SPACE]):
+            ball.resetVel()
+            player1.resetVel()
+            player2.resetVel()
     
     pygame.display.update()
     clock.tick(FPS)
