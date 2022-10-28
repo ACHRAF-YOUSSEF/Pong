@@ -35,14 +35,39 @@ score = f"{score1}           {score2}"
 winner = ""
 
 # functions
+def game_reset():
+    global score1 , score2, winner
+    if win():
+        draw_text(screen, winner, WIDTH//2, HEIGHT//2 - 50, 50, WHITE)
+        draw_text(screen, "Press space to restart!", WIDTH//2, HEIGHT//2, 50, WHITE)     
+        if pygame.key.get_pressed()[pygame.K_SPACE]:
+            ball.y_vel = ball.x_vel = 10
+            ball.resetVel()
+            player1.resetVel()
+            player2.resetVel()
+            player1.resetPos()
+            player2.resetPos()
+            score1 = score2 = 0
+            winner = ""
+
 def win():
     global winner
     
     if score1 == 11 and score1 - score2 >= 2:
         winner = 'player1 wins'
+        ball.x_coord = WIDTH // 2
+        ball.y_coord = HEIGHT // 2
+        ball.x_vel = ball.y_vel = 0
+        return True
         
     elif score2 == 11 and score2 - score1 >= 2:
-        winner = 'player2 wins'   
+        winner = 'player2 wins'
+        ball.x_coord = WIDTH // 2
+        ball.y_coord = HEIGHT // 2
+        ball.x_vel = ball.y_vel = 0
+        return True   
+        
+    return False
 
 def scoring():
     global score1, score2, score
@@ -128,6 +153,10 @@ class Player:
         
     def resetVel(self) -> None:
         self.y_vel = self.default_vel
+    
+    def resetPos(self) -> None:
+        self.x_coord = 40, HEIGHT//2 - 60
+        self.y_coord = WIDTH - 65, HEIGHT//2 - 60
         
     def move(self, controls: tuple) -> None:
         keys = pygame.key.get_pressed()
@@ -185,21 +214,7 @@ while run:
     scoring()
     draw_text(screen, score, WIDTH//2, 30, 50, WHITE)
     
-    win()
-    
-    if winner != "":
-        draw_text(screen, winner, WIDTH//2, HEIGHT//2 - 50, 50, GREEN)
-        ball.x_vel = 0
-        ball.y_vel = 0
-        player1.y_vel = 0
-        player2.y_vel = 0
-        draw_text(screen, 'press the space bar to restart!', WIDTH//2, HEIGHT//2, 50, GREEN)
-        
-        if (pygame.key.get_pressed()[pygame.K_SPACE]):
-            ball.resetVel()
-            player1.resetVel()
-            player2.resetVel()
-            winner = ""
+    game_reset()
     
     pygame.display.update()
     clock.tick(FPS)
