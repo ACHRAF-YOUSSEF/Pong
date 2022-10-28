@@ -53,14 +53,14 @@ def game_reset():
 def win():
     global winner
     
-    if score1 == 11 and score1 - score2 >= 2:
+    if score1 >= 11 and score1 - score2 >= 2:
         winner = 'player1 wins'
         ball.x_coord = WIDTH // 2
         ball.y_coord = HEIGHT // 2
         ball.x_vel = ball.y_vel = 0
         return True
         
-    elif score2 == 11 and score2 - score1 >= 2:
+    elif score2 >= 11 and score2 - score1 >= 2:
         winner = 'player2 wins'
         ball.x_coord = WIDTH // 2
         ball.y_coord = HEIGHT // 2
