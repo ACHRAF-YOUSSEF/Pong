@@ -94,15 +94,15 @@ def scoring() -> None:
     if ball.x_coord <= 0:
         ball.x_coord = WIDTH // 2
         ball.y_coord = HEIGHT // 2
-        ball.x_vel = ball.l[randint(0, 1)]
-        ball.y_vel = ball.l[randint(0, 1)]
+        ball.x_vel = ball.default_vel
+        ball.y_vel = ball.default_vel
         score2 += 1
         
     elif ball.x_coord >= WIDTH:
         ball.x_coord = WIDTH // 2
         ball.y_coord = HEIGHT // 2
-        ball.x_vel = ball.l[randint(0, 1)]
-        ball.y_vel = ball.l[randint(0, 1)]
+        ball.x_vel = ball.default_vel
+        ball.y_vel = ball.default_vel
         score1 += 1
         
     score = f"{score1}           {score2}"
@@ -131,24 +131,29 @@ class Ball:
         self.color = color
         self.radius = radius
         
-        self.x_vel = 10
-        self.y_vel = 10
-        
+        self.default_vel = 10
         self.l = [10, -10]
+        
+        self.x_vel = self.l[randint(0, 1)]
+        self.y_vel = self.l[randint(0, 1)]      
         
     def ifCollision(self) -> None:
         if ball_rect.colliderect(player1_rect) or ball_rect.colliderect(player2_rect):
             if self.x_coord <= player1_rect.x + player1.width + 1:
                 self.x_coord = player1_rect.right + 1
                 self.x_vel *= -1
+                self.x_vel += 0.5
+                self.y_vel -= 0.5
             
             if self.x_coord >= player2_rect.x:
                 self.x_coord = player2_rect.x - 1
                 self.x_vel *= -1
-    
+                self.x_vel -= 0.5
+                self.y_vel += 0.5
+                
     def resetVel(self) -> None:
-        self.x_vel = self.l[randint(0, 1)]
-        self.y_vel = self.l[randint(0, 1)] 
+        self.x_vel = self.default_vel
+        self.y_vel = self.default_vel
     
     def move(self) -> None:
         self.x_coord += self.x_vel
