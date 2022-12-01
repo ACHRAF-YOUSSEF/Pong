@@ -152,8 +152,11 @@ class Ball:
                 self.y_vel += 0.5
                 
     def resetVel(self) -> None:
-        self.x_vel = self.default_vel
-        self.y_vel = self.default_vel
+        # self.x_vel = self.default_vel
+        # self.y_vel = self.default_vel
+        
+        self.x_vel = self.l[randint(0, 1)]
+        self.y_vel = self.l[randint(0, 1)]      
     
     def move(self) -> None:
         self.x_coord += self.x_vel
@@ -179,6 +182,13 @@ class Player:
     def resetPos(self, x, y) -> None:
         self.x_coord = x
         self.y_coord = y
+        
+    def ai(self) -> None:
+        if self.y_coord < ball_rect.y:
+            self.y_coord += self.y_vel
+        
+        if self.y_coord > ball_rect.y:
+            self.y_coord -= self.y_vel
         
     def move(self, controls: tuple) -> None:
         keys = pygame.key.get_pressed()
@@ -227,10 +237,14 @@ while run:
     
     # update movements
     ball.move()
-    player1.move((pygame.K_s, pygame.K_z, pygame.K_LSHIFT))
-    player2.move((pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP))
+    # player1.move((pygame.K_s, pygame.K_z, pygame.K_LSHIFT))
+    # player2.move((pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP))
+    
+    player1.ai()
+    player2.ai()
     
     scoring()
+    
     draw_text(screen, score, WIDTH//2, 30, 50, WHITE)
     draw_text(screen, f"wins : {player1wins}", 60, 30, 30, WHITE)
     draw_text(screen, f"wins : {player2wins}", WIDTH - 60 - player2.width, 30, 30, WHITE)
