@@ -237,11 +237,11 @@ while run:
     
     # update movements
     ball.move()
-    # player1.move((pygame.K_s, pygame.K_z, pygame.K_LSHIFT))
-    # player2.move((pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP))
+    player1.move((pygame.K_s, pygame.K_z, pygame.K_LSHIFT))
+    player2.move((pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP))
     
-    player1.ai()
-    player2.ai()
+    # player1.ai()
+    # player2.ai()
     
     scoring()
     
